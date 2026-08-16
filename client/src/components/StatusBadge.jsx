@@ -1,9 +1,15 @@
+// Stitch editorial badge treatment: muted/10 tint, matching-tone border,
+// small bold uppercase label — no filled/loud colors. COMPLETED is the one
+// exception, rendered solid/filled so it's distinguishable from IN_PROGRESS
+// (which shares the same forest-green hue, muted) by weight as well as
+// color, per the "distinguishable through both typography/design and
+// restrained semantic color" requirement.
 const STATUS_STYLES = {
-  OPEN: "bg-green-50 text-green-700 border-green-200",
-  ACCEPTED: "bg-blue-50 text-blue-700 border-blue-200",
-  IN_PROGRESS: "bg-yellow-50 text-yellow-700 border-yellow-200",
-  COMPLETED: "bg-purple-50 text-purple-700 border-purple-200",
-  CANCELLED: "bg-gray-100 text-gray-500 border-gray-200",
+  OPEN: "bg-tertiary/10 text-tertiary border-tertiary/20",
+  ACCEPTED: "bg-secondary/10 text-secondary border-secondary/20",
+  IN_PROGRESS: "bg-primary/10 text-primary border-primary/20",
+  COMPLETED: "bg-primary text-on-primary border-primary",
+  CANCELLED: "bg-error/10 text-error border-error/20",
 };
 
 const STATUS_LABELS = {
@@ -18,7 +24,9 @@ export default function StatusBadge({ status }) {
   const style = STATUS_STYLES[status] || STATUS_STYLES.CANCELLED;
   const label = STATUS_LABELS[status] || status;
   return (
-    <span className={`text-xs font-medium border rounded-full px-2 py-0.5 ${style}`}>
+    <span
+      className={`inline-flex items-center font-label-caps text-label-caps uppercase tracking-wide px-3 py-1 rounded-xl border ${style}`}
+    >
       {label}
     </span>
   );

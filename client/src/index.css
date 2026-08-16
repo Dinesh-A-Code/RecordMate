@@ -4,5 +4,48 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Stitch "Parchment" surface (#FAF9F6) — the editorial background tone.
+     Individual pages still set their own bg-gray-50 wrapper for now (they're
+     redesigned in later Phase 8 parts); this establishes the foundation so
+     removing those local overrides later reveals the correct tone. */
+  background-color: #faf9f6;
+}
+
+/*
+  Reusable form-element foundation (Stitch "Inputs & Fields" pattern):
+  underlined inputs on an inset surface, focus ring on the primary color.
+  Not yet applied to existing form pages (Login/Register/Profile/
+  CreateRequest) — those are redesigned in a later Phase 8 part. Available
+  now as `.field-label`, `.field-input`, `.field-select`, `.field-textarea`,
+  `.field-help`, `.field-error` for that migration.
+*/
+@layer components {
+  .field-label {
+    @apply font-label-caps text-label-caps text-on-surface;
+  }
+
+  .field-input,
+  .field-select,
+  .field-textarea {
+    @apply w-full bg-surface-container-low border-0 border-b border-outline-variant/50
+      focus:border-primary focus:ring-0 px-4 py-3 font-body-md text-body-md text-on-surface
+      placeholder:text-on-surface-variant/50 transition-colors rounded-t-DEFAULT;
+  }
+
+  .field-select {
+    @apply appearance-none;
+  }
+
+  .field-textarea {
+    @apply resize-none;
+  }
+
+  .field-help {
+    @apply font-metadata text-metadata text-on-surface-variant;
+  }
+
+  .field-error {
+    @apply font-metadata text-metadata text-error;
+  }
 }

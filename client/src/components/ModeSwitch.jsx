@@ -3,10 +3,10 @@ import { useAuth } from "../context/AuthContext";
 import { updateMyModeRequest } from "../services/userService";
 import { getErrorMessage } from "../services/api";
 
-const MODE_LABELS = {
-  REQUESTER: { current: "Need a Writer", switchTo: "Want to Write" },
-  PROVIDER: { current: "Want to Write", switchTo: "Need a Writer" },
-};
+const SEGMENTS = [
+  { mode: "REQUESTER", label: "Need a Writer" },
+  { mode: "PROVIDER", label: "Want to Write" },
+];
 
 export default function ModeSwitch() {
   const { user, updateUser } = useAuth();
@@ -14,14 +14,13 @@ export default function ModeSwitch() {
   const [error, setError] = useState("");
 
   const mode = user?.mode || "REQUESTER";
-  const labels = MODE_LABELS[mode];
-  const nextMode = mode === "REQUESTER" ? "PROVIDER" : "REQUESTER";
 
-  const handleSwitch = async () => {
+  const handleSelect = async (targetMode) => {
+    if (targetMode === mode || switching) return;
     setError("");
     setSwitching(true);
     try {
-      const updatedUser = await updateMyModeRequest(nextMode);
+      const updatedUser = await updateMyModeRequest(targetMode);
       updateUser(updatedUser);
     } catch (err) {
       setError(getErrorMessage(err));
@@ -31,23 +30,39 @@ export default function ModeSwitch() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Current Mode</p>
-      <p className="text-lg font-semibold text-gray-800 mb-3">{labels.current}</p>
+    // Kept as a light contained block (rather than Stitch's borderless,
+    // just-a-segmented-control-on-parchment look) so it doesn't look
+    // orphaned sitting among the still-unredesigned bg-white/shadow cards
+    // on Dashboard/Profile until those pages catch up in a later part.
+    <div className="bg-surface-container-low border border-outline-variant/30 rounded-DEFAULT p-4">
+      <p className="font-label-caps text-label-caps text-on-surface-variant mb-3">Current Mode</p>
+
+      <div className="inline-flex bg-surface rounded-DEFAULT p-1 border border-outline-variant/30">
+        {SEGMENTS.map((segment) => {
+          const isActive = segment.mode === mode;
+          return (
+            <button
+              key={segment.mode}
+              type="button"
+              onClick={() => handleSelect(segment.mode)}
+              disabled={switching}
+              className={`px-4 sm:px-6 py-2 font-metadata text-metadata border-b transition-all disabled:opacity-60 disabled:cursor-not-allowed ${
+                isActive
+                  ? "text-primary border-primary"
+                  : "text-on-surface-variant border-transparent hover:text-on-surface"
+              }`}
+            >
+              {segment.label}
+            </button>
+          );
+        })}
+      </div>
 
       {error && (
-        <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
+        <div className="mt-3 font-metadata text-metadata text-error bg-error/10 border border-error/20 rounded-DEFAULT px-3 py-2">
           {error}
         </div>
       )}
-
-      <button
-        onClick={handleSwitch}
-        disabled={switching}
-        className="w-full bg-gray-800 text-white rounded py-2 text-sm font-medium hover:bg-gray-900 disabled:opacity-60"
-      >
-        {switching ? "Switching..." : `Switch to ${labels.switchTo}`}
-      </button>
     </div>
   );
 }
