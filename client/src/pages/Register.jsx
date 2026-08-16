@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getErrorMessage } from "../services/api";
+import Button from "../components/Button";
 
 const initialForm = {
   name: "",
@@ -38,44 +39,49 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-10">
-      <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow">
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">RecordMate</h1>
-        <p className="text-gray-500 mb-6">Create your account</p>
+    <div className="min-h-screen flex items-center justify-center bg-surface px-margin-mobile py-12">
+      <div className="w-full max-w-md border border-outline-variant/30 bg-surface-container-low p-8">
+        <p className="font-label-caps text-label-caps uppercase tracking-widest text-primary mb-4">
+          RecordMate
+        </p>
+        <h1 className="font-headline-md text-headline-md text-on-surface mb-2">Create your account</h1>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-8">
+          Join RecordMate to request or write academic records.
+        </p>
 
         {error && (
-          <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
+          <div className="mb-6 font-metadata text-metadata text-error bg-error/10 border border-error/20 rounded-DEFAULT px-4 py-3">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="field-label block">Name</label>
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="field-input"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <div className="space-y-2">
+            <label className="field-label block">Email</label>
             <input
               type="email"
               name="email"
               value={form.email}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="field-input"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div className="space-y-2">
+            <label className="field-label block">Password</label>
             <input
               type="password"
               name="password"
@@ -83,47 +89,45 @@ export default function Register() {
               onChange={handleChange}
               required
               minLength={6}
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="field-input"
             />
-            <p className="text-xs text-gray-400 mt-1">At least 6 characters</p>
+            <p className="field-help">At least 6 characters</p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">College</label>
-            <input
-              type="text"
-              name="college"
-              value={form.college}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="field-label block">College</label>
+              <input
+                type="text"
+                name="college"
+                value={form.college}
+                onChange={handleChange}
+                required
+                className="field-input"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label className="field-label block">Department</label>
+              <input
+                type="text"
+                name="department"
+                value={form.department}
+                onChange={handleChange}
+                required
+                className="field-input"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-            <input
-              type="text"
-              name="department"
-              value={form.department}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-blue-600 text-white rounded py-2 font-medium hover:bg-blue-700 disabled:opacity-60"
-          >
+          <Button type="submit" variant="primary" disabled={submitting} className="w-full">
             {submitting ? "Creating account..." : "Register"}
-          </button>
+          </Button>
         </form>
 
-        <p className="mt-4 text-sm text-gray-500 text-center">
+        <p className="mt-8 font-metadata text-metadata text-on-surface-variant text-center">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-primary hover:underline">
             Log In
           </Link>
         </p>

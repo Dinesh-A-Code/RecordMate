@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { getErrorMessage } from "../services/api";
+import Button from "../components/Button";
 
 export default function Login() {
   const { login } = useAuth();
@@ -30,54 +31,55 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm bg-white p-6 rounded-lg shadow">
-        <h1 className="text-2xl font-bold text-gray-800 mb-1">RecordMate</h1>
-        <p className="text-gray-500 mb-6">Log in to your account</p>
+    <div className="min-h-screen flex items-center justify-center bg-surface px-margin-mobile">
+      <div className="w-full max-w-sm border border-outline-variant/30 bg-surface-container-low p-8">
+        <p className="font-label-caps text-label-caps uppercase tracking-widest text-primary mb-4">
+          RecordMate
+        </p>
+        <h1 className="font-headline-md text-headline-md text-on-surface mb-2">Welcome back</h1>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-8">
+          Log in to continue to your account.
+        </p>
 
         {error && (
-          <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
+          <div className="mb-6 font-metadata text-metadata text-error bg-error/10 border border-error/20 rounded-DEFAULT px-4 py-3">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="field-label block">Email</label>
             <input
               type="email"
               name="email"
               value={form.email}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="field-input"
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <div className="space-y-2">
+            <label className="field-label block">Password</label>
             <input
               type="password"
               name="password"
               value={form.password}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="field-input"
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="w-full bg-blue-600 text-white rounded py-2 font-medium hover:bg-blue-700 disabled:opacity-60"
-          >
+          <Button type="submit" variant="primary" disabled={submitting} className="w-full">
             {submitting ? "Logging in..." : "Log In"}
-          </button>
+          </Button>
         </form>
 
-        <p className="mt-4 text-sm text-gray-500 text-center">
+        <p className="mt-8 font-metadata text-metadata text-on-surface-variant text-center">
           Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-primary hover:underline">
             Register
           </Link>
         </p>
