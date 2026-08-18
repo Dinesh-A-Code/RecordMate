@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { updateMyProfileRequest } from "../services/userService";
 import { getErrorMessage } from "../services/api";
+import Button from "./Button";
 
 export default function LocationUpdate() {
   const { user, updateUser } = useAuth();
@@ -47,32 +48,35 @@ export default function LocationUpdate() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Location</p>
-      <p className="text-sm text-gray-600 mb-3">
+    // Same light contained treatment as the sibling ModeSwitch component —
+    // the two sit side by side on Profile, so they're kept as a matched pair.
+    <div className="bg-surface-container-low border border-outline-variant/30 rounded-DEFAULT p-4">
+      <p className="font-label-caps text-label-caps text-on-surface-variant mb-3">Location</p>
+      <p className="font-metadata text-metadata text-on-surface-variant mb-4">
         {hasLocation
           ? "Location saved. Only used to find nearby requests — never shown to other users as exact coordinates."
-          : "No location set yet. Add one so nearby matching can work in a later phase."}
+          : "No location set yet. Add one so nearby matching works correctly."}
       </p>
 
       {error && (
-        <div className="mb-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
+        <div className="mb-4 font-metadata text-metadata text-error bg-error/10 border border-error/20 rounded-DEFAULT px-3 py-2">
           {error}
         </div>
       )}
       {success && (
-        <div className="mb-3 text-sm text-green-700 bg-green-50 border border-green-200 rounded px-3 py-2">
+        <div className="mb-4 font-metadata text-metadata text-primary bg-primary/10 border border-primary/20 rounded-DEFAULT px-3 py-2">
           {success}
         </div>
       )}
 
-      <button
+      <Button
+        variant="primary"
         onClick={handleUpdateLocation}
         disabled={requesting}
-        className="w-full bg-blue-600 text-white rounded py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-60"
+        className="w-full"
       >
         {requesting ? "Getting location..." : "Update My Location"}
-      </button>
+      </Button>
     </div>
   );
 }
