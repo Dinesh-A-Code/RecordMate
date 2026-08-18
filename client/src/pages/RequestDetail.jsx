@@ -10,6 +10,7 @@ import { getErrorMessage } from "../services/api";
 import { useSocketEvent } from "../context/SocketContext";
 import Navbar from "../components/Navbar";
 import StatusBadge from "../components/StatusBadge";
+import Button from "../components/Button";
 
 export default function RequestDetail() {
   const { id } = useParams();
@@ -107,156 +108,176 @@ export default function RequestDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface">
       <Navbar />
-      <main className="max-w-xl mx-auto p-6">
-        <Link to={backLink} className="text-sm text-blue-600 hover:underline">
-          ← Back
-        </Link>
+      <main className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div className="max-w-2xl mx-auto py-10 md:py-14">
+          <Link to={backLink} className="font-metadata text-metadata text-primary hover:underline">
+            ← Back
+          </Link>
 
-        {error && (
-          <div className="mt-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
-            {error}
-          </div>
-        )}
-
-        {loading ? (
-          <p className="text-gray-500 text-sm mt-4">Loading...</p>
-        ) : !request ? null : (
-          <div className="bg-white rounded-lg shadow p-6 mt-4">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800">{request.recordType}</h2>
-                <p className="text-gray-500">{request.subject}</p>
-              </div>
-              <StatusBadge status={request.status} />
+          {error && (
+            <div className="mt-6 font-metadata text-metadata text-error bg-error/10 border border-error/20 rounded-DEFAULT px-4 py-3">
+              {error}
             </div>
+          )}
 
-            <dl className="text-sm text-gray-600 space-y-2">
-              <div className="flex justify-between">
-                <dt className="font-medium text-gray-500">Pages</dt>
-                <dd>{request.pages}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="font-medium text-gray-500">Payment</dt>
-                <dd>₹{request.payment}</dd>
-              </div>
-              <div className="flex justify-between">
-                <dt className="font-medium text-gray-500">Deadline</dt>
-                <dd>{new Date(request.deadline).toLocaleDateString()}</dd>
+          {loading ? (
+            <p className="font-metadata text-metadata text-on-surface-variant mt-6">Loading...</p>
+          ) : !request ? null : (
+            <div className="mt-6">
+              <div className="flex justify-between items-start gap-4 pb-6 border-b border-outline-variant/30">
+                <div>
+                  <h1 className="font-headline-md text-headline-md text-on-surface mb-1">
+                    {request.recordType}
+                  </h1>
+                  <p className="font-body-md text-body-md text-on-surface-variant">{request.subject}</p>
+                </div>
+                <StatusBadge status={request.status} />
               </div>
 
-              {isOwnerView ? (
-                <>
-                  <div className="flex justify-between">
-                    <dt className="font-medium text-gray-500">Search Radius</dt>
-                    <dd>{request.radius} km</dd>
-                  </div>
-                  <div className="flex justify-between">
-                    <dt className="font-medium text-gray-500">Created</dt>
-                    <dd>{new Date(request.createdAt).toLocaleDateString()}</dd>
-                  </div>
-                  {request.providerId && (
-                    <div className="flex justify-between">
-                      <dt className="font-medium text-gray-500">Provider</dt>
-                      <dd>
-                        {request.providerId.name} · {request.providerId.college}
+              <dl className="divide-y divide-outline-variant/20">
+                <div className="flex justify-between py-3">
+                  <dt className="font-metadata text-metadata text-on-surface-variant">Pages</dt>
+                  <dd className="font-body-md text-body-md text-on-surface">{request.pages}</dd>
+                </div>
+                <div className="flex justify-between py-3">
+                  <dt className="font-metadata text-metadata text-on-surface-variant">Payment</dt>
+                  <dd className="font-body-md text-body-md text-on-surface">₹{request.payment}</dd>
+                </div>
+                <div className="flex justify-between py-3">
+                  <dt className="font-metadata text-metadata text-on-surface-variant">Deadline</dt>
+                  <dd className="font-body-md text-body-md text-on-surface">
+                    {new Date(request.deadline).toLocaleDateString()}
+                  </dd>
+                </div>
+
+                {isOwnerView ? (
+                  <>
+                    <div className="flex justify-between py-3">
+                      <dt className="font-metadata text-metadata text-on-surface-variant">Search Radius</dt>
+                      <dd className="font-body-md text-body-md text-on-surface">{request.radius} km</dd>
+                    </div>
+                    <div className="flex justify-between py-3">
+                      <dt className="font-metadata text-metadata text-on-surface-variant">Created</dt>
+                      <dd className="font-body-md text-body-md text-on-surface">
+                        {new Date(request.createdAt).toLocaleDateString()}
                       </dd>
                     </div>
-                  )}
-                </>
-              ) : (
-                <>
-                  <div className="flex justify-between">
-                    <dt className="font-medium text-gray-500">College</dt>
-                    <dd>{request.college || "Unknown"}</dd>
-                  </div>
-                  {typeof request.distanceKm === "number" && (
-                    <div className="flex justify-between">
-                      <dt className="font-medium text-gray-500">Distance</dt>
-                      <dd>{request.distanceKm} km away</dd>
+                    {request.providerId && (
+                      <div className="flex justify-between py-3">
+                        <dt className="font-metadata text-metadata text-on-surface-variant">Provider</dt>
+                        <dd className="font-body-md text-body-md text-on-surface">
+                          {request.providerId.name} · {request.providerId.college}
+                        </dd>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="flex justify-between py-3">
+                      <dt className="font-metadata text-metadata text-on-surface-variant">College</dt>
+                      <dd className="font-body-md text-body-md text-on-surface">
+                        {request.college || "Unknown"}
+                      </dd>
                     </div>
-                  )}
-                </>
-              )}
+                    {typeof request.distanceKm === "number" && (
+                      <div className="flex justify-between py-3">
+                        <dt className="font-metadata text-metadata text-on-surface-variant">Distance</dt>
+                        <dd className="font-body-md text-body-md text-on-surface">
+                          {request.distanceKm} km away
+                        </dd>
+                      </div>
+                    )}
+                  </>
+                )}
 
-              {request.description && (
-                <div>
-                  <dt className="font-medium text-gray-500 mb-1">Description</dt>
-                  <dd className="text-gray-700">{request.description}</dd>
-                </div>
-              )}
-            </dl>
-
-            {/* Owner: cancel an OPEN request */}
-            {isOwnerView && request.status === "OPEN" && (
-              <button
-                onClick={handleCancel}
-                disabled={cancelling}
-                className="w-full mt-6 bg-red-50 text-red-700 border border-red-200 rounded py-2 text-sm font-medium hover:bg-red-100 disabled:opacity-60"
-              >
-                {cancelling ? "Cancelling..." : "Cancel Request"}
-              </button>
-            )}
-
-            {/* Eligible provider: accept an OPEN request, with confirmation */}
-            {!isOwnerView && !isAssignedProviderView && request.status === "OPEN" && (
-              confirmingAccept ? (
-                <div className="mt-6 space-y-2">
-                  <p className="text-sm text-gray-700 text-center">
-                    Accept this record-writing request?
-                  </p>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => setConfirmingAccept(false)}
-                      disabled={accepting}
-                      className="flex-1 bg-gray-100 text-gray-700 rounded py-2 text-sm font-medium hover:bg-gray-200 disabled:opacity-60"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleAccept}
-                      disabled={accepting}
-                      className="flex-1 bg-blue-600 text-white rounded py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-60"
-                    >
-                      {accepting ? "Accepting..." : "Accept"}
-                    </button>
+                {request.description && (
+                  <div className="py-3">
+                    <dt className="font-metadata text-metadata text-on-surface-variant mb-1">Description</dt>
+                    <dd className="font-body-md text-body-md text-on-surface">{request.description}</dd>
                   </div>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setConfirmingAccept(true)}
-                  className="w-full mt-6 bg-blue-600 text-white rounded py-2 text-sm font-medium hover:bg-blue-700"
-                >
-                  Accept Request
-                </button>
-              )
-            )}
+                )}
+              </dl>
 
-            {/* Assigned provider: move the task forward */}
-            {isAssignedProviderView && request.status === "ACCEPTED" && (
-              <button
-                onClick={() => handleStatusUpdate("IN_PROGRESS")}
-                disabled={updatingStatus}
-                className="w-full mt-6 bg-blue-600 text-white rounded py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-60"
-              >
-                {updatingStatus ? "Updating..." : "Start Task"}
-              </button>
-            )}
-            {isAssignedProviderView && request.status === "IN_PROGRESS" && (
-              <button
-                onClick={() => handleStatusUpdate("COMPLETED")}
-                disabled={updatingStatus}
-                className="w-full mt-6 bg-blue-600 text-white rounded py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-60"
-              >
-                {updatingStatus ? "Updating..." : "Mark Completed"}
-              </button>
-            )}
-            {isAssignedProviderView && request.status === "COMPLETED" && (
-              <p className="w-full mt-6 text-center text-sm text-gray-500">Task Completed</p>
-            )}
-          </div>
-        )}
+              {/* Owner: cancel an OPEN request */}
+              {isOwnerView && request.status === "OPEN" && (
+                <Button
+                  variant="destructive"
+                  onClick={handleCancel}
+                  disabled={cancelling}
+                  className="w-full mt-8"
+                >
+                  {cancelling ? "Cancelling..." : "Cancel Request"}
+                </Button>
+              )}
+
+              {/* Eligible provider: accept an OPEN request, with confirmation */}
+              {!isOwnerView && !isAssignedProviderView && request.status === "OPEN" && (
+                confirmingAccept ? (
+                  <div className="mt-8 space-y-3">
+                    <p className="font-body-md text-body-md text-on-surface text-center">
+                      Accept this record-writing request?
+                    </p>
+                    <div className="flex gap-3">
+                      <Button
+                        variant="secondary"
+                        onClick={() => setConfirmingAccept(false)}
+                        disabled={accepting}
+                        className="flex-1"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant="primary"
+                        onClick={handleAccept}
+                        disabled={accepting}
+                        className="flex-1"
+                      >
+                        {accepting ? "Accepting..." : "Accept"}
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <Button
+                    variant="primary"
+                    onClick={() => setConfirmingAccept(true)}
+                    className="w-full mt-8"
+                  >
+                    Accept Request
+                  </Button>
+                )
+              )}
+
+              {/* Assigned provider: move the task forward */}
+              {isAssignedProviderView && request.status === "ACCEPTED" && (
+                <Button
+                  variant="primary"
+                  onClick={() => handleStatusUpdate("IN_PROGRESS")}
+                  disabled={updatingStatus}
+                  className="w-full mt-8"
+                >
+                  {updatingStatus ? "Updating..." : "Start Task"}
+                </Button>
+              )}
+              {isAssignedProviderView && request.status === "IN_PROGRESS" && (
+                <Button
+                  variant="primary"
+                  onClick={() => handleStatusUpdate("COMPLETED")}
+                  disabled={updatingStatus}
+                  className="w-full mt-8"
+                >
+                  {updatingStatus ? "Updating..." : "Mark Completed"}
+                </Button>
+              )}
+              {isAssignedProviderView && request.status === "COMPLETED" && (
+                <p className="font-metadata text-metadata text-on-surface-variant text-center mt-8">
+                  Task Completed
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </main>
     </div>
   );

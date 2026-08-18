@@ -5,6 +5,7 @@ import { createRequestRequest } from "../services/requestService";
 import { updateMyProfileRequest } from "../services/userService";
 import { getErrorMessage } from "../services/api";
 import Navbar from "../components/Navbar";
+import Button from "../components/Button";
 
 const initialForm = {
   recordType: "",
@@ -29,14 +30,17 @@ export default function CreateRequest() {
   // showing a form the user isn't allowed to submit.
   if (user?.mode !== "REQUESTER") {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-surface">
         <Navbar />
-        <main className="max-w-xl mx-auto p-6">
-          <div className="bg-white rounded-lg shadow p-6 text-center">
-            <p className="text-gray-700">
+        <main className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+          <div className="max-w-2xl mx-auto py-16 text-center">
+            <p className="font-body-md text-body-md text-on-surface-variant">
               Switch to REQUESTER mode ("Need a Writer") to create a record request.
             </p>
-            <Link to="/dashboard" className="text-blue-600 hover:underline text-sm mt-3 inline-block">
+            <Link
+              to="/dashboard"
+              className="font-metadata text-metadata text-primary hover:underline mt-3 inline-block"
+            >
               Back to Dashboard
             </Link>
           </div>
@@ -131,21 +135,29 @@ export default function CreateRequest() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-surface">
       <Navbar />
-      <main className="max-w-xl mx-auto p-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Create a Record Request</h2>
+      <main className="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+        <div className="max-w-2xl mx-auto py-10 md:py-14">
+          <p className="font-label-caps text-label-caps uppercase tracking-widest text-primary mb-3">
+            RecordMate / New Request
+          </p>
+          <h1 className="font-headline-md text-headline-md text-on-surface mb-2">
+            Create a Record Request
+          </h1>
+          <p className="font-body-md text-body-md text-on-surface-variant mb-8">
+            Describe the record you need written and set a radius so nearby students can find it.
+          </p>
 
           {error && (
-            <div className="mb-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded px-3 py-2">
+            <div className="mb-6 font-metadata text-metadata text-error bg-error/10 border border-error/20 rounded-DEFAULT px-4 py-3">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Record Type</label>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="field-label block">Record Type</label>
               <input
                 type="text"
                 name="recordType"
@@ -153,12 +165,12 @@ export default function CreateRequest() {
                 onChange={handleChange}
                 placeholder="Practical Record"
                 required
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="field-input"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+            <div className="space-y-2">
+              <label className="field-label block">Subject</label>
               <input
                 type="text"
                 name="subject"
@@ -166,13 +178,13 @@ export default function CreateRequest() {
                 onChange={handleChange}
                 placeholder="Agronomy"
                 required
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="field-input"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Pages</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <label className="field-label block">Pages</label>
                 <input
                   type="number"
                   name="pages"
@@ -181,11 +193,11 @@ export default function CreateRequest() {
                   min="1"
                   step="1"
                   required
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="field-input"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Payment (₹)</label>
+              <div className="space-y-2">
+                <label className="field-label block">Payment (₹)</label>
                 <input
                   type="number"
                   name="payment"
@@ -194,26 +206,26 @@ export default function CreateRequest() {
                   min="0"
                   step="1"
                   required
-                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="field-input"
                 />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Deadline</label>
+            <div className="space-y-2">
+              <label className="field-label block">Deadline</label>
               <input
                 type="date"
                 name="deadline"
                 value={form.deadline}
                 onChange={handleChange}
                 required
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="field-input"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Description <span className="text-gray-400 font-normal">(optional)</span>
+            <div className="space-y-2">
+              <label className="field-label block">
+                Description <span className="text-on-surface-variant/70 normal-case font-normal">(optional)</span>
               </label>
               <textarea
                 name="description"
@@ -222,12 +234,12 @@ export default function CreateRequest() {
                 rows={3}
                 maxLength={1000}
                 placeholder="Need handwritten record completion."
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="field-textarea"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Search Radius (km)</label>
+            <div className="space-y-2">
+              <label className="field-label block">Search Radius (km)</label>
               <input
                 type="number"
                 name="radius"
@@ -237,34 +249,30 @@ export default function CreateRequest() {
                 max="50"
                 step="1"
                 required
-                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="field-input"
               />
             </div>
 
-            <div className="border border-gray-200 rounded px-3 py-3">
-              <p className="text-sm font-medium text-gray-700 mb-1">Location</p>
-              <p className="text-sm text-gray-500 mb-2">
+            <div className="border border-outline-variant/30 px-4 py-4">
+              <p className="field-label block mb-1">Location</p>
+              <p className="font-metadata text-metadata text-on-surface-variant mb-3">
                 {user?.location
                   ? "Using your saved profile location."
                   : "No location set. Add one so providers nearby can find this request."}
               </p>
-              <button
+              <Button
                 type="button"
+                variant="secondary"
                 onClick={handleUseCurrentLocation}
                 disabled={locatingNow}
-                className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded px-3 py-1.5 disabled:opacity-60"
               >
                 {locatingNow ? "Getting location..." : "Use My Current Location"}
-              </button>
+              </Button>
             </div>
 
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-blue-600 text-white rounded py-2 font-medium hover:bg-blue-700 disabled:opacity-60"
-            >
+            <Button type="submit" variant="primary" disabled={submitting} className="w-full">
               {submitting ? "Creating..." : "Create Request"}
-            </button>
+            </Button>
           </form>
         </div>
       </main>
